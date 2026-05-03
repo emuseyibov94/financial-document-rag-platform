@@ -14,8 +14,8 @@ def test_health_check_returns_expected_shape() -> None:
     data = response.json()
 
     assert data["status"] in ["ok", "degraded"]
-    assert data["service"] == "ai-backend-foundation"
-    assert data["version"] == "0.1.0"
+    assert data["service"] == "financial-document-rag-platform"
+    assert data["version"] == "0.2.0"
     assert data["environment"] == "local"
 
     assert "dependencies" in data
