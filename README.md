@@ -8,3 +8,12 @@ Initial domain capabilities:
 - Document status lifecycle
 - Repository-based database access
 - Document create/list/detail APIs
+
+## Object Storage
+
+This project uses MinIO as an S3-compatible local object storage service.
+
+MinIO Console:
+
+```text
+http://127.0.0.1:9001

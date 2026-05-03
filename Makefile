@@ -1,4 +1,4 @@
-.PHONY: dev test compose-up compose-down compose-build logs logs-api logs-db logs-redis test-docker shell-api shell-db redis-ping db-psql migration migrate prod-like-up prod-like-up-d prod-like-down prod-like-logs prod-like-migrate prod-like-ps
+.PHONY: dev test compose-up compose-down compose-build logs logs-api logs-db logs-redis test-docker shell-api shell-db redis-ping db-psql migration migrate prod-like-up prod-like-up-d prod-like-down prod-like-logs prod-like-migrate prod-like-ps minio-logs minio-console
 
 dev:
 	uvicorn app.main:app --reload
@@ -34,16 +34,16 @@ test-docker:
 	docker compose run --rm api pytest
 
 shell-api:
-	docker exec -it ai-backend-api bash
+	docker exec -it financial-rag-api bash
 
 shell-db:
-	docker exec -it ai-backend-postgres bash
+	docker exec -it financial-rag-postgres bash
 
 db-psql:
-	docker exec -it ai-backend-postgres psql -U ai_backend_user -d ai_backend_foundation
+	docker exec -it financial-rag-postgres psql -U ai_backend_user -d ai_backend_foundation
 
 redis-ping:
-	docker exec -it ai-backend-redis redis-cli ping
+	docker exec -it financial-rag-redis redis-cli ping
 
 migration:
 	docker compose run --rm api alembic revision --autogenerate -m "$(msg)"
@@ -68,3 +68,11 @@ prod-like-migrate:
 
 prod-like-ps:
 	docker compose -f docker-compose.prod-like.yml ps
+
+minio-logs:
+	docker compose logs -f minio
+
+minio-console:
+	@echo "MinIO Console: http://127.0.0.1:9001"
+	@echo "Username: minioadmin"
+	@echo "Password: minioadmin"

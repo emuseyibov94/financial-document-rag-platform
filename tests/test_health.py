@@ -17,10 +17,12 @@ def test_health_check_returns_expected_shape() -> None:
     assert data["service"] == "financial-document-rag-platform"
     assert data["version"] == "0.2.0"
     assert data["environment"] == "local"
-
+    
     assert "dependencies" in data
     assert "database" in data["dependencies"]
     assert "redis" in data["dependencies"]
+    assert "object_storage" in data["dependencies"]
 
     assert data["dependencies"]["database"] in ["ok", "unavailable"]
     assert data["dependencies"]["redis"] in ["ok", "unavailable"]
+    assert data["dependencies"]["object_storage"] in ["ok", "unavailable"]

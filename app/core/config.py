@@ -23,6 +23,13 @@ class Settings(BaseSettings):
     redis_db: int = 0
     redis_url: str = "redis://redis:6379/0"
 
+    object_storage_endpoint: str = "http://minio:9000"
+    object_storage_external_endpoint: str = "http://127.0.0.1:9000"
+    object_storage_access_key: str = "minioadmin"
+    object_storage_secret_key: str = "minioadmin"
+    object_storage_bucket_documents: str = "documents"
+    object_storage_region: str = "us-east-1"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

@@ -15,6 +15,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      minio:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health').read()\""]
       interval: 10s
@@ -23,7 +25,7 @@ services:
 
   postgres:
     image: pgvector/pgvector:pg16
-    container_name: ai-backend-postgres-prod-like
+    container_name: financial-rag-postgres-prod-like
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -41,7 +43,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: ai-backend-redis-prod-like
+    container_name: financial-rag-redis-prod-like
     ports:
       - "6380:6379"
     volumes:
@@ -53,6 +55,25 @@ services:
       timeout: 3s
       retries: 5
 
+  minio:
+    image: minio/minio:latest
+    container_name: financial-rag-minio-prod-like
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${OBJECT_STORAGE_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${OBJECT_STORAGE_SECRET_KEY}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_prod_like_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
 volumes:
   postgres_prod_like_data:
   redis_prod_like_data:
+  minio_prod_like_data:

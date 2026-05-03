@@ -4,7 +4,7 @@ from pydantic import BaseModel
 class DependencyHealth(BaseModel):
     database: str
     redis: str
-
+    object_storage: str
 
 class HealthResponse(BaseModel):
     status: str
